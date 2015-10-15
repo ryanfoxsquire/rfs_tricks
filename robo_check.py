@@ -1,3 +1,6 @@
+# a script to scrape robo-panda wiki
+# Ryan 10-14-2015
+
 import sys, os
 from PyQt4.QtGui import *  
 from PyQt4.QtCore import *  
