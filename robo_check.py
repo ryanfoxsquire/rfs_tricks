@@ -47,44 +47,50 @@ files = os.listdir(data_path)
 files.sort()
 last_data = pickle.load(open(data_path + files[-1], "rb"))
 old_names = last_data['names']
+last_change_date = last_data['date_human']
 #old_names = old_names[0:-5] #DEBUG
 #names = names[5::] # DEBUG
 
 # Report on current status
 print("The employees currently are:\n")
 for name in names: print(name)
-print("\nCurrently there are {0} employees on robo-panda/".format(len(names)))
+print("\nCurrently there are {0} employees on robo-panda/\n".format(len(names)))
 
 # build the changes summary
 change_summary = ""
 if(set(names) == set(old_names)):
     change_summary = change_summary + "No Change"
+    changes = False
 else: 
     new_people = set(names) - set(old_names)
     missing_people = set(old_names) - set(names)
     if(new_people): change_summary = change_summary + "\n{0} new people: {1}".format(len(new_people), new_people) 
     if(missing_people): change_summary = change_summary + "\n{0} missing people: {1}".format(len(missing_people), missing_people)
+    changes = True
+print("Since {0} the differences are:".format(last_change_date))
 print(change_summary)
-
-datenow = datetime.datetime.now()
-names_dict = {
-    'names' : names,
-    'date' : datenow,
-    'date_human' : str(datenow),
-    'total' : len(set(names)), 
-    'changes' : change_summary
-}
-
-# Save today's data as a pickled dictionary
-data_path = '/Users/ryan/Documents/ryan non-work/robo_panda_data/'
-
-# Prepare to save new data
-filename = "robo_scrape_" + str(datenow)
-filename = re.sub(r'\s+', "-", filename)
-filename = re.sub(r'\.', "-", filename)
-filename = re.sub(r':', "-", filename)
-filename = data_path + filename +  ".p"
-pickle.dump(names_dict, open( filename, "wb" ))
 print("")
-print("Saved latest robo_scrape to {0}".format(filename))
+if(changes):
+    # Save today's data as a pickled dictionary
+    datenow = datetime.datetime.now()
+    names_dict = {
+        'names' : names,
+        'date' : datenow,
+        'date_human' : str(datenow),
+        'total' : len(set(names)), 
+        'changes' : change_summary
+    }       
+
+    data_path = '/Users/ryan/Documents/ryan non-work/robo_panda_data/'  
+
+    # Prepare to save new data
+    filename = "robo_scrape_" + str(datenow)
+    filename = re.sub(r'\s+', "-", filename)
+    filename = re.sub(r'\.', "-", filename)
+    filename = re.sub(r':', "-", filename)
+    filename = data_path + filename +  ".p"
+    pickle.dump(names_dict, open( filename, "wb" ))
+    print("Saved latest robo_scrape to {0}".format(filename))
+else:
+    print("Did not save redundant data.")
 
