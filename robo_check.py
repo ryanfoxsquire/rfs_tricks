@@ -39,6 +39,7 @@ for this_case in matches:
     this_name = re.search('ng-style="l.name_style">(.+?)</div>', this_case).group(1)
     names.append(this_name)
 
+
 # Check these names against most recent data
 print("")
 print("Comparing to last view...")
@@ -89,7 +90,7 @@ if(changes):
     filename = re.sub(r'\.', "-", filename)
     filename = re.sub(r':', "-", filename)
     filename = data_path + filename +  ".p"
-    pickle.dump(names_dict, open( filename, "wb" ))
+    pickle.dump(names_dict, open( filename, "wb" ), protocol=2)
     print("Saved latest robo_scrape to {0}".format(filename))
 else:
     print("Did not save redundant data.")
