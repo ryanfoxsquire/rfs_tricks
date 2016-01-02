@@ -90,7 +90,7 @@ if(changes):
     filename = re.sub(r'\.', "-", filename)
     filename = re.sub(r':', "-", filename)
     filename = data_path + filename +  ".p"
-    pickle.dump(names_dict, open( filename, "wb" ), protocol=2)
+    pickle.dump(names_dict, open( filename, "wb" ), protocol=2) # protocol 2 is backwards-compatible with Python2
     print("Saved latest robo_scrape to {0}".format(filename))
 else:
     print("Did not save redundant data.")
